@@ -195,7 +195,7 @@
         var extended = _.extend(destination, source);
         // Replace this line with an `expect` statement that tests
         // the behavior described by the `it` string
-        expect(extended.a).to.equal('x');
+        expect(extended.a).to.equal('b');
       });
 
       it('should not override properties not found in the source', function() {

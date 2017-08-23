@@ -213,7 +213,7 @@
   // provided, provide a default one
   _.some = function(collection, iterator) {
     iterator = iterator || _.identity;
-    return !_.every(collection, _.negate(iterator))
+    return !_.every(collection, _.negate(iterator));
     // TIP: There's a very clever way to re-use every() here.
   };
 
@@ -236,15 +236,26 @@
   //   }, {
   //     bla: "even more stuff"
   //   }); // obj1 now contains key1, key2, key3 and bla
-  _.extend = function(obj) {
-    _.each(obj, function(key) {
-
+  _.extend = function(obj, ...objects) {
+    _.each(objects, function(object, index) {
+      _.each(object, function(value, key) {
+          obj[key] = value;
+      });
     });
+    return obj;
   };
 
   // Like extend, but doesn't ever overwrite a key that already
   // exists in obj
-  _.defaults = function(obj) {
+  _.defaults = function(obj, ...objects) {
+    _.each(objects, function(object, index) {
+      _.each(object, function(value, key) {
+        if (!(key in obj)) {
+          obj[key] = value;
+        }
+      });
+    });
+    return obj;
   };
 
 
@@ -288,6 +299,14 @@
   // already computed the result for the given argument and return that value
   // instead if possible.
   _.memoize = function(func) {
+    let resultObject = {};
+    return function () {
+      let args = JSON.stringify(arguments);
+      if (!(args in resultObject)) {
+        resultObject[args] = func.apply(this, arguments);
+      }
+      return resultObject[args];
+    };
   };
 
   // Delays a function for the given number of milliseconds, and then calls
