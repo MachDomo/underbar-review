@@ -95,7 +95,7 @@
   };
 
   // Return all elements of an array that don't pass a truth test.
-  _.reject = function(collection, test) {
+  _.reject = (collection, test) => {
     return _.filter(collection, _.negate(test));
     // TIP: see if you can re-use _.filter() here, without simply
     // copying code in and modifying it
@@ -103,7 +103,22 @@
 
   // Produce a duplicate-free version of the array.
   _.uniq = function(array, isSorted, iterator) {
+    let result = [];
+    let computedArray = [];
+    _.each(array, (value) => {
+      let computed = typeof iterator === 'function' ? iterator(value) : value;
+      if (typeof iterator === 'function') {
+        computed = iterator(value);
 
+        if (!computedArray.includes(computed)) {
+          computedArray.push(computed);
+          result.push(value);
+        }
+      } else if (!result.includes(value)) {
+        result.push(value);
+      }
+    });
+    return result;
   };
 
 
@@ -132,7 +147,7 @@
     // TIP: map is really handy when you want to transform an array of
     // values into a new array of values. _.pluck() is solved for you
     // as an example of this.
-    return _.map(collection, function(item) {
+    return _.map(collection, (item) => {
       return item[key];
     });
   };
@@ -159,13 +174,13 @@
   //          No accumulator is given so the first element is used.
   _.reduce = function(collection, iterator, accumulator) {
     // invoke iterator and pass accumulator and value
-    if(accumulator === undefined) {
+    if (accumulator === undefined) {
       accumulator = collection[0];
       collection = collection.slice(1);
     }
     _.each(collection, (value) => {
       accumulator = iterator(accumulator, value);
-    })
+    });
     return accumulator;
   };
 
