@@ -19,6 +19,13 @@
 
     describe('invoke, when provided a function reference', function() {
 
+      it('Should not use any native functions', function() {
+        var reverse = function() {
+          return this.split('').reverse().join('');
+        };
+        checkForNativeMethods(_.invoke(['dog', 'cat'], reverse));
+      });
+
       it('runs the input function on each item in the array, and returns a list of results', function() {
         var reverse = function() {
           return this.split('').reverse().join('');
