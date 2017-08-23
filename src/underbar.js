@@ -365,7 +365,15 @@
   // of that string. For example, _.sortBy(people, 'name') should sort
   // an array of people by their name.
   _.sortBy = function(collection, iterator) {
-
+    var tempCollection = collection.slice();
+    tempCollection.sort(function(a, b) {
+      if (a[iterator] < b[iterator]) {
+        return -1;
+      }
+      else if (a[iterator] >= b[iterator]) {
+          return 1;
+      }
+    });
 
   };
 
