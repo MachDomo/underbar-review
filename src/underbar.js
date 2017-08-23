@@ -239,7 +239,7 @@
   _.extend = function(obj, ...objects) {
     _.each(objects, function(object, index) {
       _.each(object, function(value, key) {
-          obj[key] = value;
+        obj[key] = value;
       });
     });
     return obj;
@@ -315,7 +315,8 @@
   // The arguments for the original function are passed after the wait
   // parameter. For example _.delay(someFunction, 500, 'a', 'b') will
   // call someFunction('a', 'b') after 500ms
-  _.delay = function(func, wait) {
+  _.delay = function(func, wait, ...args) {
+    return setTimeout(func.bind(this, ...args), wait);
   };
 
 
@@ -330,6 +331,9 @@
   // input array. For a tip on how to make a copy of an array, see:
   // http://mdn.io/Array.prototype.slice
   _.shuffle = function(array) {
+    var tempArray = array.slice();
+    tempArray.push(tempArray.shift());
+    return tempArray;
   };
 
 
